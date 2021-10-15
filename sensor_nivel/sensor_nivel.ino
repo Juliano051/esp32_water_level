@@ -1,9 +1,8 @@
-
 /*******************************************************************
     A telegram bot for your ESP8266 that controls the
     onboard LED. The LED in this example is active low.
     Parts:
-    D1 Mini ESP8266 * - http://s.click.aliexpress.com/e/uzFUnIe
+    D1 Mini ESP8266 * - 
     (or any ESP8266 board)
       = Affilate
     If you find what I do useful and would like to support me,
@@ -35,14 +34,14 @@
 
 // Initialize Wifi connection to the router
 char ssid[] = "SALA";     // your network SSID (name)
-char password[] = "S3V3rino"; // your network key
+char password[] = "Çã%7714li"; // your network key
 
 // Initialize Telegram BOT
 #define BOTtoken "1259208372:AAGeauufh6eV4SvOmTY7P2pdIo5DZFCB4pY"  // sua chave Token Bot
 
 WiFiClientSecure client;
 UniversalTelegramBot bot(BOTtoken, client);
-
+bool statusConn = false;
 
 //Checks for new messages every 1 second.
 int botRequestDelay = 1000;
@@ -178,16 +177,23 @@ void setup() {
   // connected
   WiFi.mode(WIFI_STA);
   WiFi.disconnect();
-  delay(100);
+  delay(200);
 
   // attempt to connect to Wifi network:
-  Serial.print("Connecting Wifi: ");
-  Serial.println(ssid);
-  WiFi.begin(ssid, password);
+  Serial.print("Conectando ao Wifi: ");
+  Serial.println("Nome da rede:" + ssid);
+//   WiFi.begin(ssid, password);
 
-  while (WiFi.status() != WL_CONNECTED) {
-    Serial.print(".");
-    delay(500);
+  while (!statusConn) {
+      WiFi.begin(ssid, password);
+      short tentativas = 1;
+      Serial.println("Tentativa de conexão #" + tentativas);
+      for(int i; i<5; i++){
+        Serial.print(".");
+        delay(1000);
+      }
+      tentativas++;
+      statusConn = WiFi.status();
   }
 
   Serial.println("");
